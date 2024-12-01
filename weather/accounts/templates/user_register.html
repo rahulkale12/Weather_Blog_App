@@ -5,7 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Register</title>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        height: 100%;
+        width: 100vw;
+        background-image:url("https://images.pexels.com/photos/8645132/pexels-photo-8645132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .register-section{
+        width: 100vw;
+        height: 100%;
+        background-image: url("../../static/images/rain.png");
+        /* background-size: 100% 100%; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: raining 0.2s linear infinite;
+       
+    }
+
+    @keyframes raining{
+        0%{
+            background-position: 0% 0%;
+        }
+
+        100%{
+            background-position: 10% 100%;
+        }
+    }
+    
+    .register-container{
+        width: 50%;
+        /* border: 2px solid white; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        
+    }
+    .register-content{
+        width: 100%;
+       
+        
+    }
+    button{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 20px auto;
+        cursor: pointer;
+       
+        transition: all 0.2s ease-in;
+        
+        
+    }
+    button:hover{
+            background-color: greenyellow;
+         }
+
+    .form-details{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+    }
+    label{
+        font-size: 24px;
+        font-family: "Poppins";
+        font-weight: 600;
+        color: #fff;
+    }
+    
+    input{
+        margin: 10px 0;
+        padding: 10px;
+        font-size: 18px;
+
+    }
+    a{
+        text-decoration: none;
+        color: #fff;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a:hover{
+        font-style: italic;
+    }
+    
+    h2{
+        font-size: 40px;
+        font-family: "Poppins";
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .error-msg {
+        
+        margin: 15px auto;
+        width: 70%;
+        background-color: white;
+        border-radius: 10px;
+
+    & h2{
+        font-size: 18px;
+        color: crimson;
+        
+
+    }
+    }
+
+</style>
 <body>
+
+<section class="register-section">
+        
+    <div class="register-container">
+        <!-- <div class="image-div">
+            <img src="" alt="">
+        </div> -->
+        <div class="register-content">
+            <h2>User Register</h2>
+                <form action="{% url 'user_register' %}" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-details">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" placeholder="enter your name">
+                    </div>
+                    <div class="form-details">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" placeholder="enter your email">
+                    </div>
+                    <div class="form-details">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" placeholder="enter your password">
+                    </div>
+                    <div class="form-details">
+                        <label for="confirm-password">Confirm Password:</label>
+                        <input type="password" name="confirm_password" placeholder="confirm your password">
+                    </div>
+                    <button type="submit">Register</button>
+                    <a href="{% url 'user_login' %}">Already Have an account? Login Here</a>
+                </form>
+                {% if messages %}
+                <div class="error-msg">
+                    {% for message in messages %}
+                    <h2>{{ message }}</h2>
+                    {% endfor %}
+                </div>
+                {% endif %}
+        </div>
+    </div>
+</section>
     
 </body>
 </html>

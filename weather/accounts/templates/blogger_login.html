@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogger Register</title>
+    <title>Blogger Login</title>
 </head>
 <style>
     *{
@@ -129,7 +129,20 @@
         align-items: center;
     }
     
+    .error-msg {
+        
+        margin: 15px auto;
+        width: 70%;
+        background-color: white;
+        border-radius: 10px;
 
+    & h2{
+        font-size: 18px;
+        color: crimson;
+        
+
+    }
+    }
 </style>
 <body>
 
@@ -141,7 +154,8 @@
         </div> -->
         <div class="register-content">
             <h2>Blogger Login</h2>
-                <form action="{% url 'blogger_register' %}" method="post">
+                <form action="{% url 'blogger_login' %}" method="post">
+                    {% csrf_token %}
 
                     <div class="form-details">
                         <label for="email">Email:</label>
@@ -155,6 +169,13 @@
                     <button type="submit">Login</button>
                     <a href="{% url 'blogger_register' %}">Dont Have an account? Register Here</a>
                 </form>
+                {% if messages %}
+                <div class="error-msg">
+                    {% for message in messages %}
+                    <h2>{{ message }}</h2>
+                    {% endfor %}
+                </div>
+                {% endif %}
         </div>
     </div>
 </section>

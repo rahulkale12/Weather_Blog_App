@@ -12,16 +12,16 @@
         box-sizing: border-box;
     }
     body{
-        height: 100vh;
+        min-height: 100%;
         width: 100vw;
         background-image:url("https://images.pexels.com/photos/8645132/pexels-photo-8645132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: cover;
     }
 
     .register-section{
         width: 100vw;
-        height: 100vh;
+        height: 100%;
         background-image: url("../../static/images/rain.png");
         /* background-size: 100% 100%; */
         display: flex;
@@ -116,6 +116,21 @@
         justify-content: center;
         align-items: center;
     }
+
+    .error-msg {
+        
+        margin: 15px auto;
+        width: 70%;
+        background-color: white;
+        border-radius: 10px;
+
+    & h2{
+        font-size: 18px;
+        color: crimson;
+        
+
+    }
+    }
     
 
 </style>
@@ -130,6 +145,7 @@
         <div class="register-content">
             <h2>Blogger Register</h2>
                 <form action="{% url 'blogger_register' %}" method="post">
+                    {% csrf_token %}
                     
                     <div class="form-details">
                         <label for="name">Name:</label>
@@ -145,11 +161,19 @@
                     </div>
                     <div class="form-details">
                         <label for="confirm-password">Confirm Password:</label>
-                        <input type="password" name="confirm-password" placeholder="confirm your password">
+                        <input type="password" name="confirm_password" placeholder="confirm your password">
                     </div>
                     <button type="submit">Register</button>
                     <a href="{% url 'blogger_login' %}">Already Have an account? Login Here</a>
                 </form>
+                {% if messages %}
+                <div class="error-msg">
+                    {% for message in messages %}
+                    <h2>{{ message }}</h2>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
         </div>
     </div>
 </section>

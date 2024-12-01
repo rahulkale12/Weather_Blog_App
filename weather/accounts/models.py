@@ -12,3 +12,10 @@ class User_register(models.Model):
     password = models.CharField(max_length=100)
 
 
+class Blogger_profile_picture(models.Model):
+    blogger = models.ForeignKey(Blogger_register, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to="BloggerProfileImage/")
+
+class User_profile_picture(models.Model):
+    user = models.ForeignKey(User_register, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to="UserProfileImage/")
