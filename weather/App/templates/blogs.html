@@ -1,0 +1,158 @@
+{% load static %}
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.forecast }} - Blog Post</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("../../static/images/purple_sky.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            color: black;
+        }
+
+        .blog-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 80vh;
+            margin-top: 30px;
+        }
+
+        .blog-post {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-post h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .blog-post img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .like-btn {
+            font-size: 24px;
+            color: #6a11cb;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .like-btn.liked {
+            color: red;
+        }
+
+        .comment-section {
+            margin-top: 40px;
+        }
+
+        .comment-form input[type="text"],
+        .comment-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .comment-form input[type="text"] {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .comment-form button {
+            background-color: #2575fc;
+            color: white;
+            font-size: 16px;
+        }
+
+        .comment-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .comment-card p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="blog-container">
+        <div class="blog-post">
+            <h1>forecast</h1>
+            <!-- Display weather image -->
+           
+                <img src="../../static/images/thunderstorm.jpg" alt="Weather Image">
+            
+
+            <!-- Like Button Form -->
+            <form action="" method="POST">
+                
+                <button type="submit" name="like" class="like-btn">
+                    <i class="fa-solid fa-heart"></i> Like
+                </button>
+            </form>
+
+            <div class="content">
+                <p><strong>Observations:</strong>warm</p>
+                <p><strong>Location:</strong>pune</p>
+            </div>
+
+            <!-- Comment Form -->
+            <form action="" method="POST" class="comment-form">
+               
+                <input type="text" name="comment_content" placeholder="Add a comment..." required>
+                <button type="submit" name="comment">Post Comment</button>
+            </form>
+
+            <div class="comment-section">
+                <h3>Comments</h3>
+               
+                    <div class="comment-card">
+                        <p><strong>rahul:</strong>nice</p>
+                        
+                            <form action="" method="POST">
+                            
+                                <input type="hidden" name="comment_id" value="">
+                                <button type="submit" class="delete-btn" name="delete_comment">Delete</button>
+                            </form>
+                       
+                    </div>
+               
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
