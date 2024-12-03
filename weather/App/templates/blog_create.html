@@ -1,0 +1,116 @@
+{% load static %}
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Create</title>
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #f4f7fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .blog-create-card {
+        background: #ffffff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .blog-data {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .blog-data label {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #3498db;
+    }
+
+    .submit-btn {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .input-field[type="file"] {
+        padding: 8px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="blog-create-card">
+            <h2>Create Your Blog</h2>
+            <form action="{% url 'blog_create' %}" method="post"  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="blog-data">
+                    <label for="image">Upload Image</label>
+                    <input type="file" name="image" id="image" class="input-field">
+                </div>
+                <div class="blog-data">
+                    <label for="observation">Observations</label>
+                    <input type="text" name="observations" id="observation" class="input-field" placeholder="Enter your weather observations">
+                </div>
+                <div class="blog-data">
+                    <label for="location">Location</label>
+                    <input type="text" name="location" id="location" class="input-field" placeholder="Enter weather location for users to know about it.">
+                </div>
+
+                <button type="submit" class="submit-btn">Create Blog</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+
