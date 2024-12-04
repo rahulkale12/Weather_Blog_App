@@ -3,12 +3,16 @@ from accounts.models import Blogger_register, User_register
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from App.models import Blogs, Comments, Likes
+from django.utils import timezone
+import pytz
+            
 
 
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    blogs = Blogs.objects.all()
+    return render(request, "index.html", {"blogs": blogs})
 
 def blog_create(request):
     blogger_id = request.session.get('blogger_id')
@@ -38,9 +42,7 @@ def blog_create(request):
 
 
 ### Dispaly blogs ####################################################################
-from django.utils import timezone
-import pytz
-                
+    
 def my_blogs(request):
     blogger_id = request.session.get('blogger_id')
     if not blogger_id:
@@ -113,7 +115,7 @@ def blog_comment(request, id):
     print(f"Session Data - Blogger ID: {blogger_id}, User ID: {user_id}")  #
 
     if not blogger_id and not user_id:
-        messages.error(request, "You must be logged in to comment.")
+        # messages.error(request, "You must be logged in to comment.")
         return redirect('/accounts/user_login/')  
     
     if blogger_id:
@@ -170,7 +172,7 @@ def edit_comment(request, id):
 
    
     if not blogger_id and not user_id:
-        messages.error(request, "You must be logged in to comment.")
+        # messages.error(request, "You must be logged in to comment.")
         return redirect('/accounts/user_login/')  
     
     if blogger_id:
@@ -210,7 +212,7 @@ def delete_comment(request, id):
     try:
         comment = Comments.objects.get(id=id)
     except Comments.DoesNotExist:
-        messages.error(request, "Comment not found.")
+        # messages.error(request, "Comment not found.")
         return redirect('my_blog')  
 
 
@@ -234,9 +236,9 @@ def like_blog(request, id):
     blogger_id = request.session.get('blogger_id')
     user_id = request.session.get('user_id')
 
-    if not blogger_id and user_id:
-        messages.info('you need to log in to like the post')
-        return redirect('accounts/blogger_login/')
+    if not user_id and not blogger_id:
+        # messages.error(request, "You must be logged in to like.")
+        return redirect('/accounts/user_login/')  
     
     
     if blogger_id:
@@ -260,14 +262,14 @@ def like_blog(request, id):
         if like_check:
             Likes.objects.filter(blogs_toLike=blog, blogger=blogger).delete()  # Unlike
         else:
-            Likes.objects.create(blogs_toLike=blog, blogger=blogger, like=1)  # Like
+            Likes.objects.create(blogs_toLike=blog, blogger=blogger, like=1)   # Like
 
     elif user:
         like_check = Likes.objects.filter(blogs_toLike=blog, user=user).exists()
         if like_check:
-            Likes.objects.filter(blogs_toLike=blog, user=user).delete()  # Unlike
+            Likes.objects.filter(blogs_toLike=blog, user=user).delete()  
         else:
-            Likes.objects.create(blogs_toLike=blog, user=user, like=1)  # Like
+            Likes.objects.create(blogs_toLike=blog, user=user, like=1)  
 
    
     return redirect("/my_blogs/")  

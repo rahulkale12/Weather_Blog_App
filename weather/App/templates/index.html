@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -10,7 +11,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-    <title>Home</title>
     <style>
         *{
             margin: 0;
@@ -18,12 +18,12 @@
             box-sizing: border-box;
         }
 
-       body{
-        max-width: 100vw;
-        max-height: 100vh;
-       }
+        body{
+            max-width: 100vw;
+            max-height: 100vh;
+        }
 
-       .section-navbar{
+        .section-navbar{
             width: 100vw;
             display: flex;
             flex-direction: column;
@@ -32,29 +32,116 @@
             justify-content: space-between;
             gap: 10px;
             padding: 20px 0;
-            background-color: greenyellow;
-       }
-       
-       .section-navbar .heading {
-            font-size: 30px;
-            font-weight: 600;
+            background-color: rgb(61, 221, 3)  /* Darker green for navbar */
 
-       }
-       .navbar ul{
+        }
+
+        .section-navbar .heading {
+            font-size: 40px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .navbar ul{
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 40px;
-            
-            & li{
-                font-size: 20px;
-                list-style: none;
-            }
+        }
 
-            & a{
-                text-decoration: none;
-            }
-       }
+        .navbar ul li{
+            font-size: 28px;
+            list-style: none;
+        }
+
+        .navbar ul li a{
+            text-decoration: none;
+            color: #111;
+        }
+
+        .navbar ul li a:hover{
+            font-style: italic;  /* Subtle hover effect for links */
+        }
+
+        .index-blogs{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .index-blogs .container{
+            width: 100%;
+            display:grid;
+            grid-template-columns: repeat(4, 2fr);
+            gap: 40px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .index-blogs .container .card{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #4a7c4f;  /* Matching card border with navbar */
+        
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+        }
+
+        .index-blogs .container .card:hover{
+            box-shadow: 0 8px 20px rgba(58, 93, 61, 0.2);  /* Darker green hover shadow */
+            transform: translateY(-10px);  /* Slight lift effect */
+        }
+
+        .index-blogs .container .card-image{
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            border: 2px solid #4a7c4f;  
+        }
+
+        .index-blogs .container .card-image img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .index-blogs .container .card-content p:nth-of-type(1){
+            margin: 15px 0;
+        }
+
+        .index-blogs .container .card-content p:not(:first-child){
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        .index-blogs .container .card-content p{
+            color: #333;  
+        }
+
+        .index-blogs .container .actions{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 0;
+            background-color: #4a7c4f;  
+        }
+
+        .index-blogs .container .actions a{
+            color: white;
+            text-decoration: none;
+        }
+
+        .index-blogs .container .actions a:hover{
+            color: #f2f8f1; 
+        }
 
     </style>
 </head>
@@ -72,25 +159,27 @@
         </div>
     </header>
 
-<!-------------------------------------------------------------------------------------------------------------------------------------------->
-     
     <section class="index-blogs">
         <div class="container">
+            {% for blog in blogs %}
             <div class="card">
                 <div class="card-image">
-                    <img src="https://c4.wallpaperflare.com/wallpaper/215/673/310/sunny-bright-day-wallpaper-preview.jpg" alt="">
+                    <img src="{{ blog.blog_image.url }}" alt="Blog Image">
                 </div>
                 <div class="card-content">
-                    <p>weather Forecast</p>
-                    <p>location</p>
+                    <p><strong>Posted On:</strong>  {{blog.created_at}}</p>
+                    <p><strong>Observations:</strong>  {{ blog.observations }}</p>
+                    <p><strong>Location:</strong>  {{ blog.location }}</p>
                 </div>
-                <a href="">Comment</a>
-                <a href=""><i class="fa-solid fa-heart"></i></a>
-            
+                <div class="actions">
+                    <a href="{% url 'like_blog' blog.id %}"><i class="fa-solid fa-heart"></i> Like</a>
+                    <a href="{% url 'blog_comment' blog.id %}">Comment</a>
+                </div>
             </div>
+            {% empty %}
+            <p>No blogs available.</p>
+            {% endfor %}
         </div>
-
     </section>
-    
 </body>
 </html>
