@@ -37,106 +37,9 @@ def blog_create(request):
     return render(request, "blog_create.html")
 
 
-
-
-# def blog_detail(request, blog_id):
-#     blog = Blogs.objects.get(id=blog_id)
-
-#     # Handle Like
-#     if request.method == "POST" and 'like' in request.POST:
-#         if request.user.is_authenticated:
-#             if not Likes.objects.filter(blogs_toLike=blog, user=request.user).exists():
-#                 Likes.objects.create(blogs_toLike=blog, user=request.user)
-#                 messages.success(request, "You liked this blog.")
-#             else:
-#                 messages.error(request, "You have already liked this blog.")
-#         else:
-#             messages.error(request, "You need to be logged in to like this blog.")
-#         return redirect('blog_detail', blog_id=blog.id)
-
-#     # Handle Comment
-#     if request.method == "POST" and 'comment' in request.POST:
-#         comment_content = request.POST.get('comment_content')
-#         if request.user.is_authenticated:
-#             Comments.objects.create(blog=blog, comment=comment_content, user=request.user)
-#             messages.success(request, "Comment added successfully!")
-#         else:
-#             messages.error(request, "You need to be logged in to comment.")
-#         return redirect('blog_detail', blog_id=blog.id)
-
-#     # Handle Comment Deletion
-#     if request.method == "POST" and 'delete_comment' in request.POST:
-#         comment_id = request.POST.get('comment_id')
-#         comment = Comments.objects.get(id=comment_id)
-#         if comment.user == request.user or comment.blogger == request.user:
-#             comment.delete()
-#             messages.success(request, "Comment deleted successfully.")
-#         else:
-#             messages.error(request, "You are not authorized to delete this comment.")
-#         return redirect('blog_detail', blog_id=blog.id)
-
-#     return render(request, "blog_detail.html", {'blog': blog})
-
-
-
-
-# def blogs(request, blog_id):
-#     blog = Blogs.objects.get(id=blog_id)
-#     blogger_id = request.session.get('blogger_id')
-#     user_id = request.session.get('user_id')
-
-#     if not blogger_id:
-#         return redirect('/accounts/blogger_login/')
-#     elif not user_id:
-#         return redirect('/accounts/user_login/')
-
-#     try:
-#         blogger = Blogger_register.objects.get(blogger=blogger_id)
-#     except Blogger_register.DoesNotExist:
-#         return redirect('/accounts/blogger_register/')
-
-#     try:
-#         user = User_register.objects.get(user=user_id)
-#     except User_register.DoesNotExist:
-#         return redirect('/accounts/user_register/')
-
-#     if request.method == "POST":
-#         # Handle Like
-#         if 'like' in request.POST:
-#             if user:
-#                 # Check if the user has already liked the post
-#                 like_exists = Likes.objects.filter(blogs_toLike=blog, user=user).exists()
-#                 if not like_exists:
-#                     Likes.objects.create(blogs_toLike=blog, user=user, like=1)
-#                     messages.success(request, "You liked the blog!")
-#                 else:
-#                     messages.warning(request, "You have already liked this blog.")
-#             elif blogger:
-#                 # Check if the blogger has already liked the post
-#                 like_exists = Likes.objects.filter(blogs_toLike=blog, blogger=blogger).exists()
-#                 if not like_exists:
-#                     Likes.objects.create(blogs_toLike=blog, blogger=blogger, like=1)
-#                     messages.success(request, "You liked the blog!")
-#                 else:
-#                     messages.warning(request, "You have already liked this blog.")
-
-#         # Handle Comment
-#         elif 'comment' in request.POST:
-#             comment_content = request.POST.get('comment')
-#             if comment_content:
-#                 if user:
-#                     Comments.objects.create(blogs_toComment=blog, user=user, comment=comment_content)
-#                     messages.success(request, "Comment added successfully!")
-#                 elif blogger:
-#                     Comments.objects.create(blogs_toComment=blog, blogger=blogger, comment=comment_content)
-#                     messages.success(request, "Comment added successfully!")
-#                 else:
-#                     messages.error(request, "You must be logged in to comment.")
-
-#         return redirect('blog_detail', blog_id=blog.id)
-
-#     return render(request, 'blogs.html', {'blog': blog})
-
+### Dispaly blogs ####################################################################
+from django.utils import timezone
+import pytz
                 
 def my_blogs(request):
     blogger_id = request.session.get('blogger_id')
@@ -148,25 +51,56 @@ def my_blogs(request):
         return redirect('/accounts/blogger_register/')
     
     blogs = Blogs.objects.filter(blogger = blogger)
+    local_tz = pytz.timezone('Asia/Kolkata')
+    # for like count ###########
+    for blog in blogs:
+        print(f"Original UTC time: {blog.created_at}")
+        
+        blog.created_at = blog.created_at.astimezone(local_tz)
+        print(f"Converted local time: {blog.created_at}")
+        likes = Likes.objects.filter(blogs_toLike = blog).count()
+        blog.likes_count = likes
+
+
+        # Check if the blogger or user liked the blog
+        blog.is_liked_by_user = Likes.objects.filter(blogs_toLike=blog, blogger=blogger).exists() if blogger else False
+        blog.is_liked_by_user = Likes.objects.filter(blogs_toLike=blog, user=request.user).exists() if not blogger else blog.is_liked_by_user
+
+        
 
     if not blogs:
         messages.info(request, "No blogs Posted")
-        return render(request, "my_blogs.html", {'bogs':[]})
+        return render(request, "my_blogs.html", {'blogs':[]})
+    
 
-    return render(request, 'my_blogs.html', {'blogs':blogs})
+    return render(request, 'my_blogs.html', {'blogs':blogs, 'blogger':blogger})
 
-
+### Delete Blog view ######################################################################################
 
 
 def delete_blog(request, blog_id):
+    blogger_id = request.session.get('blogger_id')
+    if not blogger_id:
+        return redirect('/accounts/blogger_login/')
+    
     try:
-        blog = Blogs.objects.get(id=blog_id)
+        blogger = Blogger_register.objects.get(id = blogger_id)
+    except Blogger_register.DoesNotExist:
+        return redirect('/accounts/blogger_register/')
+    
+    blog = Blogs.objects.get(id=blog_id)
+
+    if blog.blogger:
         blog.delete()
-    except Blogs.DoesNotExist:
-        return redirect('my_blogs')
-    return redirect('my_blogs') 
+        return redirect('/my_blogs/')
+    else:
+        return redirect('/my_blogs/')
 
 
+
+
+
+### Comment add view ########################################################################################
 
 
 def blog_comment(request, id):
@@ -226,7 +160,7 @@ def blog_comment(request, id):
 
 
 
-
+######## Edit Comment view ##########################################################################
 
 
 def edit_comment(request, id):
@@ -269,7 +203,7 @@ def edit_comment(request, id):
     return render(request, 'edit_comment.html', {'comment': comment})
 
 
-
+#### Delete Comment view ############################################################################################
 
 def delete_comment(request, id):
 
@@ -292,3 +226,51 @@ def delete_comment(request, id):
     comment.delete()
     messages.success(request, "Comment deleted successfully.")
     return redirect('/my_blogs/')
+
+ ### Like add View #####################################################################################################
+
+def like_blog(request, id):
+    blog = Blogs.objects.get(id = id)
+    blogger_id = request.session.get('blogger_id')
+    user_id = request.session.get('user_id')
+
+    if not blogger_id and user_id:
+        messages.info('you need to log in to like the post')
+        return redirect('accounts/blogger_login/')
+    
+    
+    if blogger_id:
+        try:
+            blogger = Blogger_register.objects.get(id = blogger_id)
+        except Blogger_register.DoesNotExist:
+            return redirect('/accounts/blogger_register/')
+    else:
+        blogger = None
+
+    if user_id:
+        try: 
+            user = User_register.objects.get(id = user_id)
+        except User_register.DoesNotExist:
+            return redirect('/accounts/user_register/')
+    else:
+        user = None
+
+    if blogger:
+        like_check = Likes.objects.filter(blogs_toLike=blog, blogger=blogger).exists()
+        if like_check:
+            Likes.objects.filter(blogs_toLike=blog, blogger=blogger).delete()  # Unlike
+        else:
+            Likes.objects.create(blogs_toLike=blog, blogger=blogger, like=1)  # Like
+
+    elif user:
+        like_check = Likes.objects.filter(blogs_toLike=blog, user=user).exists()
+        if like_check:
+            Likes.objects.filter(blogs_toLike=blog, user=user).delete()  # Unlike
+        else:
+            Likes.objects.create(blogs_toLike=blog, user=user, like=1)  # Like
+
+   
+    return redirect("/my_blogs/")  
+    
+
+
