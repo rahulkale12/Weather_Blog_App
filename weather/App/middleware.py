@@ -13,7 +13,7 @@ def auth_middleware(get_response):
             return redirect(reverse('index'))
         
         # Redirect if user is not logged in and trying to access blogger-specific pages
-        if request.path in blogger_paths and request.session.get('user_id') is None:
+        elif request.path in blogger_paths and request.session.get('user_id') is None:
             return redirect(reverse('index'))  # Replace 'index' with your actual view name
         
         # Prevent logged-in bloggers from accessing blogger register/login pages
@@ -21,7 +21,7 @@ def auth_middleware(get_response):
             return redirect('/accounts/blogger_profile/')
         
         # Prevent logged-in users from accessing user register/login pages
-        if request.path in user_auth_paths and request.session.get('user_id') is not None:
+        elif request.path in user_auth_paths and request.session.get('user_id') is not None:
             return redirect('/accounts/user_profile/')
         
         # Prevent logged-in users from accessing blogger register/login pages

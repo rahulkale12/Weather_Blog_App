@@ -21,6 +21,7 @@
         body{
             max-width: 100vw;
             max-height: 100vh;
+            overflow-x: hidden;
         }
 
         .section-navbar{
@@ -32,7 +33,7 @@
             justify-content: space-between;
             gap: 10px;
             padding: 20px 0;
-            background-color: rgb(61, 221, 3)  /* Darker green for navbar */
+            background-color: rgb(61, 221, 3)  
 
         }
 
@@ -60,126 +61,282 @@
         }
 
         .navbar ul li a:hover{
-            font-style: italic;  /* Subtle hover effect for links */
+            font-style: italic;  
         }
 
-        .index-blogs{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
 
-        .index-blogs .container{
-            width: 100%;
-            display:grid;
-            grid-template-columns: repeat(4, 2fr);
-            gap: 40px;
-            justify-items: center;
-            align-items: center;
-        }
-
-        .index-blogs .container .card{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border: 2px solid #4a7c4f;  /* Matching card border with navbar */
         
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .blogs-container {
+            max-width: 1200px;
+            margin: 50px auto;
             padding: 20px;
         }
 
-        .index-blogs .container .card:hover{
-            box-shadow: 0 8px 20px rgba(58, 93, 61, 0.2);  /* Darker green hover shadow */
-            transform: translateY(-10px);  /* Slight lift effect */
+        h1 {
+            
+            font-size: 36px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .index-blogs .container .card-image{
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            border: 2px solid #4a7c4f;  
-        }
-
-        .index-blogs .container .card-image img{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .index-blogs .container .card-content p:nth-of-type(1){
-            margin: 15px 0;
-        }
-
-        .index-blogs .container .card-content p:not(:first-child){
-            font-size: 18px;
-            margin: 5px 0;
-        }
-
-        .index-blogs .container .card-content p{
-            color: #333;  
-        }
-
-        .index-blogs .container .actions{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 10px 0;
-            background-color: #4a7c4f;  
-        }
-
-        .index-blogs .container .actions a{
+        .create-blog-btn {
+            display: inline-block;
+            background-color: #2575fc;
             color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 5px;
             text-decoration: none;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .create-blog-btn:hover {
+            background-color: #1e63d1;
         }
 
-        .index-blogs .container .actions a:hover{
-            color: #f2f8f1; 
+        /* Grid Layout for Blog Cards */
+        .blogs-grid {
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 50px;
+            margin-top: 30px;
         }
 
+        .blog-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .blog-card h2 {
+            font-size: 22px;
+            color: #333;
+            margin: 15px;
+        }
+
+        .blog-card p {
+            font-size: 16px;
+            color: #555;
+            margin: 0 15px 15px;
+        }
+
+        /* Like Button Styles */
+        .like-btn {
+            color: #333;
+            font-size: 18px;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .like-btn.liked {
+            color: #e74c3c !important; /* Ensure it applies the red color */
+        }
+
+        .like-btn:not(.liked) {
+            color: #888; /* Grey color for unliked state */
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .comments-section h3 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .comment {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .comment-actions {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .edit-comment-btn, .delete-comment-btn {
+            color: #ff4d4d;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .edit-comment-btn:hover, .delete-comment-btn:hover {
+            text-decoration: underline;
+        }
+
+        .comment-text {
+            font-size: 16px;
+            color: #555;
+            /* margin-top: 10px; */
+        }
+
+        .comment-form {
+            margin-top: 30px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .comment-form button {
+            padding: 12px 24px;
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .comment-form button:hover {
+            background-color: #1e63d1;
+        }
     </style>
 </head>
 <body>
-
     <header class="section-navbar">
         <div class="heading">
             Weather Blogs
+            {{request.session.user_id}}
         </div>
         <div class="navbar">
             <ul>
+                {% if request.session.blogger_id %}
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'my_blogs' %}">My Blogs</a></li>
+                <li><a href="{% url 'blogger_profile' %}">Blogger Profile</a></li>
+                <li><a href="{% url 'blogger_logout' %}">Blogger Logout</a></li>
+                {% elif request.session.user_id%}
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'user_profile' %}">User Profile</a></li>
+                <li><a href="{% url 'user_logout' %}">User Logout</a></li>
+                {% else %}
                 <li><a href="/accounts/user_login/">User Login</a></li>
                 <li><a href="/accounts/blogger_login/">Blogger Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </header>
 
-    <section class="index-blogs">
-        <div class="container">
-            {% for blog in blogs %}
-            <div class="card">
-                <div class="card-image">
-                    <img src="{{ blog.blog_image.url }}" alt="Blog Image">
-                </div>
-                <div class="card-content">
-                    <p><strong>Posted On:</strong>  {{blog.created_at}}</p>
-                    <p><strong>Observations:</strong>  {{ blog.observations }}</p>
-                    <p><strong>Location:</strong>  {{ blog.location }}</p>
-                </div>
-                <div class="actions">
-                    <a href="{% url 'like_blog' blog.id %}"><i class="fa-solid fa-heart"></i> Like</a>
-                    <a href="{% url 'blog_comment' blog.id %}">Comment</a>
-                </div>
+    <div class="blogs-container">
+        <h1>All Blogs</h1>
+        
+        <!-- Create Blog Button -->
+        <a href="{% url 'blog_create' %}" class="create-blog-btn">Create Blog</a>
+
+        <!-- Display Blogs -->
+        {% if blogs %}
+            <div class="blogs-grid">
+                {% for blog in blogs %}
+
+                    <div class="blog-card">
+                        {% if blog.blog_image %}
+                            <img src="{{ blog.blog_image.url }}" alt="Blog Image">
+                        {% endif %}
+
+                        <h2>{{ blog.observations }}</h2>
+
+                        <!--for time-->
+                        {% load tz %}
+                        <p><strong>Created on:</strong> {% timezone "Asia/Kolkata" %}{{ blog.created_at|date:"Y-m-d h:i A" }}{% endtimezone %}</p>
+                        <p><strong>Location:</strong> {{ blog.location }}</p>
+
+                        <!-- Like Button -->
+                        <a href="{% url 'like_blog' blog.id %}" class="like-btn {% if blog.is_liked_by_user %}liked{% endif %}">
+                            <i class="fa-solid fa-heart"></i> Like ({{ blog.likes_count }})
+                        </a>
+
+                        {% if blog.blogger == blogger %}
+                            <a href="{% url 'delete_blog' blog.id %}" class="like-btn" style="color: red;">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </a>
+                        {% endif %}
+
+                        <!-- Comments Section -->
+                        <div class="comments-section">
+                            <h3>Comments</h3>
+
+                            <!-- Display Comments -->
+                            {% for comment in blog.comments_set.all %}
+                                <div class="comment">
+                                    <div class="comment-header">
+                                        <span class="comment-author">
+                                            {% if comment.user %}
+                                                {{ comment.user.name }}
+                                            {% elif comment.blogger %}
+                                                {{ comment.blogger.name }}
+                                            {% endif %}
+                                        </span>
+                                        <span class="comment-actions">
+                                            <a href="{% url 'edit_comment' comment.id %}" class="edit-comment-btn">Edit</a>
+                                            <a href="{% url 'delete_comment' comment.id %}" class="delete-comment-btn">Delete</a>
+                                        </span>
+                                    </div>
+                                    <p class="comment-text">{{ comment.comment }}</p>
+                                </div>
+                            {% endfor %}
+
+                            <!-- Comment Form -->
+                            <div class="comment-form">
+                                <form method="POST" action="{% url 'blog_comment' blog.id %}">
+                                    {% csrf_token %}
+                                    <textarea name="comment_text" placeholder="Add a comment..." required></textarea>
+                                    <button type="submit">Post Comment</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <p>No blogs available.</p>
-            {% endfor %}
-        </div>
-    </section>
+        {% else %}
+            <p>No Blogs Posted</p>
+        {% endif %}
+    </div>
 </body>
 </html>

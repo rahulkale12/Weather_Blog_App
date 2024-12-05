@@ -62,9 +62,11 @@
                 {% if request.session.blogger_id %}
                 <li><a href="{% url 'index' %}">Home</a></li>
                 <li><a href="{% url 'my_blogs' %}">My Blogs</a></li>
+                <li><a href="{% url 'blogger_profile' %}">Blogger Profile</a></li>
                 <li><a href="{% url 'blogger_logout' %}">Blogger Logout</a></li>
                 {% else %}
                 <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'user_profile' %}">User Profile</a></li>
                 <li><a href="{% url 'user_logout' %}">User Logout</a></li>
                 {% endif %}
             </ul>

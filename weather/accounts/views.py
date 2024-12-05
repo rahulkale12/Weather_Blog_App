@@ -46,6 +46,7 @@ def blogger_login(request):
             blogger = Blogger_register.objects.get(email=email)
             if blogger.email == email and check_password(password, blogger.password):
                 request.session['blogger_id'] = blogger.id
+                
                 return redirect('/accounts/blogger_profile/')
             else:
                 messages.info(request, "Invalid Credentilas")
