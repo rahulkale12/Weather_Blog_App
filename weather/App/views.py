@@ -52,7 +52,7 @@ def blog_create(request):
         image = request.FILES.get('image')
 
         if not (observations and location and image):
-            messages.error(request, "All fields are mandatory")
+            messages.info(request, "All fields are mandatory")
             return redirect('/blog_create/')
         blog_data = Blogs.objects.create(blogger = blogger, blog_image = image ,observations=observations, location = location )
         blog_data.save()
@@ -171,7 +171,7 @@ def blog_comment(request, id):
                 
             
         else:
-            messages.error(request, "You must enter a comment to post.")
+            messages.info(request, "You must enter a comment to post.")
     
 
     return redirect('/')
@@ -339,7 +339,7 @@ def like_blog(request, id):
             Likes.objects.create(blogs_toLike=blog, user=user, like=1)  
 
    
-    return redirect("/my_blogs/")  
+    return redirect("/")  
     
 
 

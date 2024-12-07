@@ -124,6 +124,10 @@
             border-radius: 8px;
             transition: opacity 0.3s ease;
         }
+        .blog-card .blogger-name{
+            margin-left: 18px;
+            margin-top: 5px;
+        }
 
         .blog-card h2 {
             font-size: 22px;
@@ -280,7 +284,7 @@
                         {% if blog.blog_image %}
                             <img src="{{ blog.blog_image.url }}" alt="Blog Image">
                         {% endif %}
-
+                        <h3 class="blogger-name">Posted By: {{blog.blogger.name}}</h3>
                         <h2>{{ blog.observations }}</h2>
 
                         <!--for time-->
@@ -336,7 +340,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>No Blogs Posted</p>
+            <!-- <p>No Blogs Posted</p> -->
         {% endif %}
     </div>
 </body>
